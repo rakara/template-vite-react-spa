@@ -1,7 +1,6 @@
 name: CI
 on:
   pull_request:
-  workflow_dispatch:
   push:
     branches: [main]
 concurrency:
@@ -13,19 +12,14 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      actions: write
+      contents: read
     steps:
       - uses: actions/checkout@v5
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
-          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-          package-manager-cache: false
-      - run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
-      - run: npm run format
+          package-manager-cache: true
+      - run: npm ci
       - run: npm run format:check
       - run: npm run lint
       - run: npm run typecheck
@@ -33,38 +27,3 @@ jobs:
       - run: npm audit --audit-level=high
       - run: npm run build
 
-      - name: Commit generated lockfile and formatting
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
-        run: |
-          lockfile_backup="$(mktemp)"
-          if [ -f package-lock.json ]; then cp package-lock.json "$lockfile_backup"; fi
-          pushed=false
-          for attempt in 1 2 3; do
-            git fetch origin "$TARGET_BRANCH"
-            git reset --hard "origin/$TARGET_BRANCH"
-            if [ ! -f package-lock.json ] && [ -s "$lockfile_backup" ]; then
-              cp "$lockfile_backup" package-lock.json
-            fi
-            npm run format
-            git add -A
-            if git diff --cached --quiet; then
-              pushed=true
-              break
-            fi
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: normalize formatting and commit npm lockfile [skip ci]"
-            if git push origin "HEAD:$TARGET_BRANCH"; then
-              pushed=true
-              break
-            fi
-          done
-          rm -f "$lockfile_backup"
-          if [ "$pushed" != "true" ]; then
-            echo "Could not update the starter branch after three attempts."
-            exit 1
-          fi
-          gh workflow run ci.yml --repo "${{ github.repository }}" --ref "$TARGET_BRANCH"
