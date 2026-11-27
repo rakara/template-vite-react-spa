@@ -27,5 +27,4 @@ jobs:
       - run: npm audit --audit-level=high
       - run: npm run build
 
-          fi
 
