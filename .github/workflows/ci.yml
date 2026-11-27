@@ -12,7 +12,7 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -20,38 +20,9 @@ jobs:
           node-version: 22
           package-manager-cache: true
       - run: npm ci
-      - run: npm run format
       - run: npm run format:check
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
       - run: npm audit --audit-level=high
       - run: npm run build
-
-      - name: Commit formatting changes
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        env:
-          TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
-        run: |
-          pushed=false
-          for attempt in 1 2 3; do
-            git fetch origin "$TARGET_BRANCH"
-            git reset --hard "origin/$TARGET_BRANCH"
-            npm run format
-            git add -A
-            if git diff --cached --quiet; then
-              pushed=true
-              break
-            fi
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "style: apply Prettier formatting [skip ci]"
-            if git push origin "HEAD:$TARGET_BRANCH"; then
-              pushed=true
-              break
-            fi
-          done
-          if [ "$pushed" != "true" ]; then
-            echo "Could not update formatting after three attempts."
-            exit 1
-          fi
