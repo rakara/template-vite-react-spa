@@ -24,9 +24,7 @@ function HomePage() {
     <main className="home">
       <p className="eyebrow">APPLICATION STARTER</p>
       <h1>Build your next product on a sound foundation.</h1>
-      <p className="muted">
-        Vite, React, TypeScript and Supabase, ready to configure.
-      </p>
+      <p className="muted">Vite, React, TypeScript and Supabase, ready to configure.</p>
       <div className="actions">
         <Link className="button" to="/sign-in">
           Sign in
