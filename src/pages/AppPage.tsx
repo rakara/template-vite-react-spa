@@ -14,12 +14,21 @@ export function AppPage() {
   return (
     <main className={compactMode ? "shell compact" : "shell"}>
       <header className="topbar">
-        <a className="brand" href="/">Application Starter</a>
+        <a className="brand" href="/">
+          Application Starter
+        </a>
         <div className="actions">
-          <button className="secondary" type="button" onClick={toggleCompactMode} aria-pressed={compactMode}>
+          <button
+            className="secondary"
+            type="button"
+            onClick={toggleCompactMode}
+            aria-pressed={compactMode}
+          >
             {compactMode ? "Comfortable layout" : "Compact layout"}
           </button>
-          <button className="secondary" type="button" onClick={signOut}>Sign out</button>
+          <button className="secondary" type="button" onClick={signOut}>
+            Sign out
+          </button>
         </div>
       </header>
       <section className="content">
@@ -28,7 +37,9 @@ export function AppPage() {
         <div className="panel">
           <h2>Authenticated session</h2>
           <p className="muted">Signed in as {user?.email}</p>
-          <p className="muted">Client route guards are UX only. Protect data with PostgreSQL RLS.</p>
+          <p className="muted">
+            Client route guards are UX only. Protect data with PostgreSQL RLS.
+          </p>
         </div>
       </section>
     </main>

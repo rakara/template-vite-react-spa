@@ -1,7 +1,12 @@
 const INTERNAL_ORIGIN = "https://internal.invalid";
 
 export function getSafeInternalPath(value: unknown, fallback = "/app"): string {
-  if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//") || value.includes("\\")) {
+  if (
+    typeof value !== "string" ||
+    !value.startsWith("/") ||
+    value.startsWith("//") ||
+    value.includes("\\")
+  ) {
     return fallback;
   }
 
