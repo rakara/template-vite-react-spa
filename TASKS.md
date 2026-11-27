@@ -8,7 +8,7 @@
 - [x] Supabase environment validation and safe post-auth redirect handling.
 - [x] TanStack Query provider with centralized query defaults.
 - [x] Zustand persisted UI preference example (compact dashboard layout).
-- [x] Responsive application shell and Vercel SPA rewrite.
+- [x] Responsive application shell, lazy-loaded routes, split vendor chunks and Vercel SPA rewrite.
 - [x] Vitest unit tests for navigation safety.
 - [x] CI checks for lint, TypeScript, unit tests, high/critical dependency audit and production build.
 - [x] Architecture, development, deployment, environment and security documentation.
