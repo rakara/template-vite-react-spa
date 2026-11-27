@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+dist
+coverage
+.expo
+web-build
+.vercel
+
+.github/workflows/**
