@@ -31,14 +31,27 @@ jobs:
       - name: Commit formatting changes
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         env:
-          GH_TOKEN: ${{ github.token }}
+          TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
-          git add -A
-          if ! git diff --cached --quiet; then
+          pushed=false
+          for attempt in 1 2 3; do
+            git fetch origin "$TARGET_BRANCH"
+            git reset --hard "origin/$TARGET_BRANCH"
+            npm run format
+            git add -A
+            if git diff --cached --quiet; then
+              pushed=true
+              break
+            fi
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "style: apply Prettier formatting [skip ci]"
-            git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
+            if git push origin "HEAD:$TARGET_BRANCH"; then
+              pushed=true
+              break
+            fi
+          done
+          if [ "$pushed" != "true" ]; then
+            echo "Could not update formatting after three attempts."
+            exit 1
           fi
-
-
