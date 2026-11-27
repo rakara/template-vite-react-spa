@@ -6,3 +6,5 @@ coverage
 .expo
 web-build
 .vercel
+
+.github/workflows/**
