@@ -13,7 +13,7 @@
 - [x] Architecture, development, deployment, environment and security documentation.
 
 ## Pending
-- [ ] Commit and enforce generated npm package-lock.json.
+- [x] Commit and use generated npm package-lock.json in CI.
 - [ ] Add Playwright end-to-end tests with a configured Supabase test project.
 - [ ] Add feature-specific query/mutation examples once the adopter defines a database schema.
 - [ ] Verify Vercel Preview and Production deployment and Supabase redirect URLs.
