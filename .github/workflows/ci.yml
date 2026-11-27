@@ -20,7 +20,6 @@ jobs:
           node-version: 22
           package-manager-cache: true
       - run: npm ci
-      - run: npm run format
       - run: npm run format:check
       - run: npm run lint
       - run: npm run typecheck
@@ -28,21 +27,5 @@ jobs:
       - run: npm audit --audit-level=high
       - run: npm run build
 
-      - name: Commit Prettier formatting
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
-        run: |
-          git fetch origin "$TARGET_BRANCH"
-          git reset --hard "origin/$TARGET_BRANCH"
-          npm run format
-          git add -A
-          if ! git diff --cached --quiet; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "style: apply Prettier formatting [skip ci]"
-            git push origin "HEAD:$TARGET_BRANCH"
-            gh workflow run ci.yml --repo "${{ github.repository }}" --ref "$TARGET_BRANCH"
           fi
 
