@@ -1,0 +1,8 @@
+import { useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/lib/supabase";
+export function SignUpPage() {
+ const [email,setEmail] = useState(""); const [password,setPassword] = useState(""); const [message,setMessage] = useState<string|null>(null); const [error,setError] = useState<string|null>(null); const [busy,setBusy] = useState(false); const navigate = useNavigate();
+ async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setBusy(true); setError(null); setMessage(null); const {data,error:authError} = await supabase.auth.signUp({email,password}); setBusy(false); if (authError) { setError("Registration failed. Check the details and try again."); return; } if (data.session) navigate("/app",{replace:true}); else setMessage("Check your email to confirm your account."); }
+ return <main className="auth-page"><section className="panel"><p className="eyebrow">ACCOUNT</p><h1>Create account</h1><form onSubmit={submit} className="form"><label>Email<input type="email" autoComplete="email" required value={email} onChange={e=>setEmail(e.target.value)} /></label><label>Password<input type="password" minLength={8} autoComplete="new-password" required value={password} onChange={e=>setPassword(e.target.value)} /></label>{error && <p role="alert" className="error">{error}</p>}{message && <p role="status">{message}</p>}<button disabled={busy}>{busy ? "Creating…" : "Create account"}</button></form><p className="muted">Already registered? <Link to="/sign-in">Sign in</Link></p></section></main>;
+}

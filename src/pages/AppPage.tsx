@@ -1,0 +1,3 @@
+import { useAuth } from "@/auth/AuthProvider";
+import { supabase } from "@/lib/supabase";
+export function AppPage() { const {user} = useAuth(); async function signOut() { await supabase.auth.signOut(); } return <main className="shell"><header className="topbar"><a className="brand" href="/">Application Starter</a><button className="secondary" onClick={signOut}>Sign out</button></header><section className="content"><p className="eyebrow">WORKSPACE</p><h1>Dashboard</h1><div className="panel"><h2>Authenticated session</h2><p className="muted">Signed in as {user?.email}</p><p className="muted">Client route guards are UX only. Protect data with PostgreSQL RLS.</p></div></section></main>; }
