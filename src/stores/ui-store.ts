@@ -1,13 +1,17 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 type UiState = {
-  navigationOpen: boolean;
-  setNavigationOpen: (open: boolean) => void;
-  toggleNavigation: () => void;
+  compactMode: boolean;
+  toggleCompactMode: () => void;
 };
 
-export const useUiStore = create<UiState>((set) => ({
-  navigationOpen: true,
-  setNavigationOpen: (navigationOpen) => set({ navigationOpen }),
-  toggleNavigation: () => set((state) => ({ navigationOpen: !state.navigationOpen })),
-}));
+export const useUiStore = create<UiState>()(
+  persist(
+    (set) => ({
+      compactMode: false,
+      toggleCompactMode: () => set((state) => ({ compactMode: !state.compactMode })),
+    }),
+    { name: "application-ui-preferences" },
+  ),
+);
