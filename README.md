@@ -22,7 +22,7 @@ A reusable foundation for authenticated dashboards, admin panels and browser-bas
 
 ## Create an application from this template
 
-Use GitHub's **Use this template** action to create a new repository, then clone it. Replace the starter name, app metadata and visual identity with your product's own values.
+In repository Settings → General, enable **Template repository** if it is not already enabled. Then use **Use this template** to create a new repository and clone it. Replace the starter name, app metadata and visual identity with your product's own values.
 
 ## Install and configure
 
