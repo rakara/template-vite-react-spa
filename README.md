@@ -8,6 +8,6 @@ Vite, React, strict TypeScript, React Router, Tailwind CSS, Supabase Auth, TanSt
 
 ## Setup
 
-Copy `.env.example` to `.env`, configure Supabase, run `npm install` and `npm run dev`. See `docs/` and `TASKS.md`.
+Copy `.env.example` to `.env`, configure Supabase, run `npm ci` and `npm run dev`. See `docs/` and `TASKS.md`.
 
 No fake users, mocked API responses or hard-coded credentials are shipped.
